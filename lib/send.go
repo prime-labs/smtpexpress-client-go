@@ -17,14 +17,20 @@ type MailRecipient = MailSender
 type SendMailOptions struct {
 	Subject    string          `json:"subject,omitempty"`
 	Message    string          `json:"message,omitempty"`
-	Template   MailTemplate    `json:"template,omitempty"`
 	Sender     MailSender      `json:"sender,omitempty"`
 	Recipients []MailRecipient `json:"recipients,omitempty"`
 }
 
 type MailTemplate struct {
-	ID        string            `json:"id"`
-	Variables map[string]string `json:"variables"`
+	ID        string            `json:"id,omitempty"`
+	Variables map[string]string `json:"variables,omitempty"`
+}
+
+type SendMailWithTemplateOptions struct {
+	Subject    string          `json:"subject,omitempty"`
+	Template   MailTemplate    `json:"template,omitempty"`
+	Sender     MailSender      `json:"sender,omitempty"`
+	Recipients []MailRecipient `json:"recipients,omitempty"`
 }
 
 type SendMailResponse struct {
@@ -38,6 +44,26 @@ type SendMailResponse struct {
 type SendService service
 
 func (s *SendService) SendMail(ctx context.Context, options SendMailOptions) (SendMailResponse, error) {
+	var resp SendMailResponse
+
+	url := s.client.config.BaseUrl.JoinPath("/send")
+
+	jsonBody, _ := json.Marshal(options)
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url.String(), bytes.NewBuffer(jsonBody))
+	if err != nil {
+		return resp, err
+	}
+
+	_, err = s.client.sendRequest(req, &resp)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
+
+func (s *SendService) SendMailWithTemplate(ctx context.Context, options SendMailWithTemplateOptions) (SendMailResponse, error) {
 	var resp SendMailResponse
 
 	url := s.client.config.BaseUrl.JoinPath("/send")

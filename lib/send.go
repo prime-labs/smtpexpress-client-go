@@ -12,12 +12,14 @@ type MailSender struct {
 	Email string `json:"email"`
 }
 
+type MailRecipient = MailSender
+
 type SendMailOptions struct {
-	Subject    string       `json:"subject"`
-	Message    string       `json:"message"`
-	Template   MailTemplate `json:"template"`
-	Sender     MailSender   `json:"sender"`
-	Recipients string       `json:"recipients"`
+	Subject    string          `json:"subject,omitempty"`
+	Message    string          `json:"message,omitempty"`
+	Template   MailTemplate    `json:"template,omitempty"`
+	Sender     MailSender      `json:"sender,omitempty"`
+	Recipients []MailRecipient `json:"recipients,omitempty"`
 }
 
 type MailTemplate struct {

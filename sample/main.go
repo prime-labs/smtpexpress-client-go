@@ -20,7 +20,12 @@ func main() {
 			Email: os.Getenv("SENDER_EMAIL"),
 			Name:  "smtpexpress-client-go",
 		},
-		Recipients: os.Getenv("RECIPIENT_EMAIL"),
+		Recipients: []lib.MailRecipient{
+			{
+				Email: os.Getenv("RECIPIENT_EMAIL"),
+				Name:  "end user",
+			},
+		},
 	}
 	res, err := client.SendApi.SendMail(ctx, opts)
 	if err != nil {

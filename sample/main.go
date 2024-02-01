@@ -10,11 +10,11 @@ import (
 )
 
 func main() {
-	projectId := os.Getenv("PROJECT_ID")
-	client := lib.NewAPIClient(projectId, &lib.Config{})
+	projectSecret := os.Getenv("PROJECT_SECRET")
+	client := lib.NewAPIClient(projectSecret, &lib.Config{})
 	ctx := context.Background()
 	opts := lib.SendMailOptions{
-		Message: "<h1> Welcome to the future of Email Delivery - message 34</h1>",
+		Message: "<h1> Welcome to the future of Email Delivery - message 35</h1>",
 		Subject: "golang-sdk test subject - 1",
 		Sender: lib.MailSender{
 			Email: os.Getenv("SENDER_EMAIL"),
@@ -26,5 +26,5 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("\nin the main function: ", res)
+	fmt.Println("\n send mail was a success: ", res)
 }

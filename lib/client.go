@@ -24,21 +24,21 @@ type service struct {
 }
 
 type APIClient struct {
-	projectId string
-	config    *Config
-	common    service
+	projectSecret string
+	config        *Config
+	common        service
 
 	SendApi *SendService
 }
 
-func NewAPIClient(projectId string, cfg *Config) *APIClient {
+func NewAPIClient(projectSecret string, cfg *Config) *APIClient {
 	cfg.BaseUrl = buildBaseURL(cfg)
 
 	if cfg.HttpClient == nil {
 		cfg.HttpClient = &http.Client{Timeout: 20 * time.Second}
 	}
 
-	c := &APIClient{projectId: projectId}
+	c := &APIClient{projectSecret: projectSecret}
 	c.config = cfg
 	c.common.client = c
 
@@ -65,7 +65,7 @@ func buildBaseURL(cfg *Config) *url.URL {
 
 func (c APIClient) sendRequest(req *http.Request, resp interface{}) (*http.Response, error) {
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.projectId))
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.projectSecret))
 
 	res, err := c.config.HttpClient.Do(req)
 	if err != nil {

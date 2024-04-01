@@ -28,10 +28,10 @@ type APIClient struct {
 	config        *Config
 	common        service
 
-	SendApi *SendService
+	Send *SendService
 }
 
-func NewAPIClient(projectSecret string, cfg *Config) *APIClient {
+func CreateClient(projectSecret string, cfg *Config) *APIClient {
 	cfg.BaseUrl = buildBaseURL(cfg)
 
 	if cfg.HttpClient == nil {
@@ -42,7 +42,7 @@ func NewAPIClient(projectSecret string, cfg *Config) *APIClient {
 	c.config = cfg
 	c.common.client = c
 
-	c.SendApi = (*SendService)(&c.common)
+	c.Send = (*SendService)(&c.common)
 	return c
 }
 

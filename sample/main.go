@@ -5,17 +5,18 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
-	lib "github.com/olad5/smtpexpress-client-go/lib"
+	lib "github.com/prime-labs/smtpexpress-client-go/lib"
 )
 
 func main() {
 	projectSecret := os.Getenv("PROJECT_SECRET")
-	client := lib.NewAPIClient(projectSecret, &lib.Config{})
+	client := lib.CreateClient(projectSecret, &lib.Config{})
 	ctx := context.Background()
 	opts := lib.SendMailOptions{
-		Message: "<h1> Welcome to the future of Email Delivery - message 35</h1>",
-		Subject: "golang-sdk test subject - 1",
+		Message: fmt.Sprintf("<h1> Welcome to the future of Email Delivery - message sent at %s </h1>", time.Now().String()),
+		Subject: "golang-sdk test subject",
 		Sender: lib.MailSender{
 			Email: os.Getenv("SENDER_EMAIL"),
 			Name:  "smtpexpress-client-go",
@@ -27,7 +28,7 @@ func main() {
 			},
 		},
 	}
-	res, err := client.SendApi.SendMail(ctx, opts)
+	res, err := client.Send.SendMail(ctx, opts)
 	if err != nil {
 		log.Fatal(err)
 	}

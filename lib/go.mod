@@ -1,4 +1,4 @@
-module github.com/prime-labs/smtpexpress-client-go
+module github.com/prime-labs/smtpexpress-client-go/lib
 
 go 1.20
 

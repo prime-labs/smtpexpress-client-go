@@ -6,13 +6,12 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"os"
 	"time"
 
 	"github.com/pkg/errors"
 )
 
-var SmtpExpressURL string = os.Getenv("BASE_URL")
+var SmtpExpressURL string = "https://api.smtpexpress.com"
 
 type Config struct {
 	BaseUrl    *url.URL
